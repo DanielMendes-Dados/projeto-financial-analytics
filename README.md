@@ -70,7 +70,7 @@ financial-analytics/
 
 ## 📊 Páginas do Dashboard
 
-### 1 — Início (Capa)
+### 1 — Início
 Visão consolidada com KPIs estratégicos: Receita Bruta, Margem Líquida, EBIT e Lucro Líquido do período selecionado. Navegação central para as demais páginas analíticas.
 
 ### 2 — DRE (Demonstração do Resultado)
