@@ -44,7 +44,7 @@ financial-analytics/
 ├── python/                       # Script de análise Python
 │   └── financial_analysis.py
 │
-├── backgrounds/                  # Backgrounds customizados do dashboard
+├── Backgrounds/                  # Backgrounds customizados do dashboard
 │   ├── bg_01_inicio.png
 │   ├── bg_02_dre.png
 │   ├── bg_03_receita.png
