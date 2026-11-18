@@ -1,6 +1,6 @@
-# 📊 Financial Analytics Dashboard
+# 👥 RH Analytics Dashboard
 
-> Pipeline completo de Análise Financeira: SQL Server → Power BI → Python
+> Pipeline completo de Análise de RH: SQL Server → Power BI → Python
 
 ![Power BI](https://img.shields.io/badge/Power%20BI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)
 ![SQL Server](https://img.shields.io/badge/SQL%20Server-CC2927?style=for-the-badge&logo=microsoftsqlserver&logoColor=white)
@@ -12,9 +12,9 @@
 
 ## 🎯 Sobre o Projeto
 
-Dashboard financeiro interativo desenvolvido como projeto de portfólio, cobrindo o ciclo completo de análise de dados — desde a modelagem em SQL Server até a visualização em Power BI e análise exploratória em Python.
+Dashboard de RH interativo desenvolvido como projeto de portfólio, cobrindo o ciclo completo de análise de dados — desde a modelagem em SQL Server até a visualização em Power BI e análise exploratória em Python.
 
-O projeto simula o ambiente analítico de uma empresa de tecnologia/consultoria SAP com receita anual na faixa de R$ 5–7 Mi, abrangendo 4 páginas analíticas integradas e navegação fluida entre visões estratégicas.
+O projeto simula o ambiente analítico de uma empresa com foco em gestão de pessoas, abrangendo 4 páginas analíticas integradas com navegação fluida entre visões estratégicas de headcount, turnover e desligamentos.
 
 ---
 
@@ -32,37 +32,34 @@ SQL Server (Views)  →  Power BI (Dashboard)  →  Python (Análise)  →  GitH
 ## 📁 Estrutura do Repositório
 
 ```
-financial-analytics/
+projeto-rh-analytics/
 │
-├── sql/                          # Views SQL do projeto
-│   ├── vw_DRE_Anual.sql
-│   ├── vw_Receita_Composicao.sql
-│   ├── vw_Performance_vs_Meta.sql
-│   ├── vw_Indicadores_Rentabilidade.sql
-│   └── vw_Despesas_Centro_Custo.sql
+├── sql/                          # Script SQL do projeto
+│   └── RH analytics projeto.sql
 │
-├── python/                       # Script de análise Python
-│   └── financial_analysis.py
+├── Python/                       # Script de análise Python
+│   └── analise_rh.py
 │
 ├── Backgrounds/                  # Backgrounds customizados do dashboard
-│   ├── bg_01_inicio.png
-│   ├── bg_02_dre.png
-│   ├── bg_03_receita.png
-│   └── bg_04_rentabilidade.png
+│   ├── bg_inicio (Template Capa).png
+│   ├── bg_visao_geral (Template 1).png
+│   ├── bg_pessoas (Template 2).png
+│   └── bg_desligamentos (Template 3).png
 │
 ├── charts/                       # Gráficos gerados via Python
-│   ├── 01_receita_bruta_anual.png
-│   ├── 02_receita_por_linha.png
-│   ├── 03_realizado_vs_meta.png
-│   ├── 04_evolucao_margens.png
-│   └── 05_despesas_centro_custo.png
+│   ├── grafico_desligamentos_por_ano.png
+│   ├── grafico_funcionarios_ativos.png
+│   ├── grafico_Motivo_Saida.png
+│   ├── grafico_tempo_casa_departamento.png
+│   └── grafico_turnover_departamento.png
 │
-├── screenshots/                  # Capturas das páginas do dashboard Power BI
-│   ├── pg_01_inicio.png
-│   ├── pg_02_dre.png
-│   ├── pg_03_receita.png
-│   └── pg_04_rentabilidade.png
+├── Screenshots/                  # Capturas das páginas do dashboard Power BI
+│   ├── screenshot_inicio.png
+│   ├── screenshot_visao_geral.png
+│   ├── screenshot_pessoas.png
+│   └── screenshot_desligamentos.png
 │
+├── RH_Analytics_Dashboard.pbix
 └── README.md
 ```
 
@@ -71,16 +68,16 @@ financial-analytics/
 ## 📊 Páginas do Dashboard
 
 ### 1 — Início
-Visão consolidada com KPIs estratégicos: Receita Bruta, Margem Líquida, EBIT e Lucro Líquido do período selecionado. Navegação central para as demais páginas analíticas.
+Página de boas-vindas com descrição do projeto e navegação central para as três visões analíticas: Visão Geral, Pessoas e Desligamentos. Stack tecnológica exibida como contexto do portfólio.
 
-### 2 — DRE (Demonstração do Resultado)
-Análise da Demonstração do Resultado do Exercício com evolução anual de receitas, custos e resultado líquido. Comparativo entre anos com indicadores de variação.
+### 2 — Visão Geral
+KPIs consolidados: Headcount Ativo, Turnover Médio (%), Tenure Médio em Meses e Salário Médio. Análise de colaboradores ativos por departamento, turnover por área com alerta para departamentos acima de 28%, e ranking de retenção por tempo médio de casa. Filtro interativo por departamento.
 
-### 3 — Receita
-Decomposição da receita bruta por linha de serviço (Consultoria SAP, Suporte AMS, Licenças de Software, Manutenção de Sistemas) com análise de participação percentual e desempenho vs. meta anual.
+### 3 — Pessoas
+Tabela detalhada de colaboradores com Funcionário, Departamento, Cargo, Nível, Anos e Salário. KPIs de composição por gênero (Homens/Mulheres), distribuição por escolaridade e breakdown por nível de senioridade (Júnior · Pleno · Sênior).
 
-### 4 — Rentabilidade
-Evolução das margens (Bruta, EBIT e Líquida) ao longo dos anos, indicadores anuais consolidados e análise de despesas por centro de custo.
+### 4 — Desligamentos
+KPIs: Total de Desligamentos, Turnover Médio (%) e Meses Médios até Saída. Análise de motivos de saída (Pedido de demissão, Desligamento empresa, Abandono, Aposentadoria), comparativo anual de desligamentos e distribuição por departamento com insights narrativos integrados.
 
 ---
 
@@ -90,11 +87,11 @@ Script independente que conecta diretamente ao SQL Server via `pyodbc` e gera 5 
 
 | # | Gráfico | Tipo |
 |---|---------|------|
-| 01 | Evolução da Receita Bruta Anual | Barras verticais |
-| 02 | Receita por Linha de Serviço | Barras empilhadas |
-| 03 | Realizado vs Meta Anual | Colunas agrupadas |
-| 04 | Evolução das Margens (%) | Gráfico de linhas |
-| 05 | Despesas por Centro de Custo | Barras horizontais |
+| 01 | Desligamentos por Ano | Barras verticais |
+| 02 | Funcionários Ativos | Barras verticais |
+| 03 | Motivo de Saída | Barras horizontais |
+| 04 | Tempo de Casa por Departamento | Barras horizontais |
+| 05 | Turnover por Departamento | Barras horizontais |
 
 ### Como executar
 
@@ -106,12 +103,12 @@ venv\Scripts\activate          # Windows
 # 2. Instalar dependências
 pip install pyodbc pandas matplotlib numpy
 
-# 3. Configurar conexão em financial_analysis.py
+# 3. Configurar conexão em analise_rh.py
 SERVER   = "localhost"         # seu servidor SQL Server
-DATABASE = "Financial_Analytics"
+DATABASE = "RH_Analytics"
 
 # 4. Executar
-python financial_analysis.py
+python analise_rh.py
 # → Gráficos salvos em charts/
 ```
 
@@ -123,12 +120,10 @@ Paleta de cores aplicada de forma consistente no Power BI e no Python:
 
 | Cor | Hex | Uso |
 |-----|-----|-----|
-| Verde Escuro | `#0A3D2B` | Fundo principal |
-| Verde Card | `#0D4F37` | Cards e áreas de gráfico |
-| Dourado | `#C9A84C` | Destaques e títulos |
-| Turquesa | `#4ECDC4` | Série de dados 2 |
-| Laranja | `#E8956D` | Série de dados 3 |
-| Azul Claro | `#64B5F6` | Série de dados 4 |
+| Fundo Principal | `#0D1B2A` | Fundo das páginas |
+| Fundo Card | `#162032` | Cards e áreas de gráfico |
+| Turquesa | `#4ECDC4` | Série de dados principal e destaques |
+| Laranja | `#E8956D` | Alertas e série de dados secundária |
 
 ---
 
@@ -137,7 +132,7 @@ Paleta de cores aplicada de forma consistente no Power BI e no Python:
 | Camada | Tecnologia |
 |--------|-----------|
 | Banco de dados | SQL Server 17 |
-| Modelagem | Views SQL (5 views analíticas) |
+| Modelagem | Views SQL |
 | Visualização | Power BI Desktop |
 | Análise | Python 3 · pandas · matplotlib · pyodbc · numpy |
 | Versionamento | Git · GitHub |
