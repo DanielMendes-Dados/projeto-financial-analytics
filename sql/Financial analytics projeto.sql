@@ -4,7 +4,7 @@
 -- Tabelas: Plano_Contas, Centro_Custo, Lancamentos_Financeiros, Metas_Anuais
 -- Views: vw_DRE, vw_Indicadores_Rentabilidade, vw_Receita_Composicao,
 --        vw_Despesas_Centro_Custo, vw_Performance_vs_Meta, vw_Painel_Executivo_Financeiro
--- Período: Jan/2022 – Nov/2026
+-- Período: Jan/2022 – Nov/2026 (data final fixa, para a base ser reproduzível)
 -- Autor: Daniel Mendes
 -- =============================================================================
 
@@ -127,12 +127,14 @@ GO
 -- =============================================================================
 
 WITH
--- Período válido
+-- Período válido: Jan/2022 a Nov/2026
+-- Data final fixa (em vez de GETDATE()) para que a base gerada seja sempre a mesma,
+-- independentemente do dia em que o script for executado
 Datas AS (
     SELECT ano, mes, DATEFROMPARTS(ano, mes, 1) AS data_ref
     FROM (VALUES (2022),(2023),(2024),(2025),(2026)) v(ano)
     CROSS JOIN (VALUES (1),(2),(3),(4),(5),(6),(7),(8),(9),(10),(11),(12)) m(mes)
-    WHERE DATEFROMPARTS(ano, mes, 1) <= EOMONTH(GETDATE())
+    WHERE DATEFROMPARTS(ano, mes, 1) <= DATEFROMPARTS(2026, 11, 1)
 ),
 -- Fator de crescimento anual (base 2022 = 1.00)
 Crescimento AS (
@@ -439,16 +441,23 @@ GO
 
 -- =============================================================================
 -- VIEW 5: vw_Indicadores_Rentabilidade — KPIs acumulados por ano
+-- Margens anuais = soma do resultado ÷ soma da receita líquida do ano
+-- (ponderadas pela receita; a média simples das margens mensais distorce o valor)
 -- =============================================================================
 
 CREATE OR ALTER VIEW vw_Indicadores_Rentabilidade AS
 SELECT
     ano,
+    COUNT(*)                    AS Meses_Apurados,
     SUM(Receita_Bruta)          AS Receita_Bruta_Anual,
     SUM(Receita_Liquida)        AS Receita_Liquida_Anual,
     SUM(Lucro_Bruto)            AS Lucro_Bruto_Anual,
     SUM(EBIT)                   AS EBIT_Anual,
     SUM(Lucro_Liquido)          AS Lucro_Liquido_Anual,
+    ROUND(SUM(Lucro_Bruto)   / NULLIF(SUM(Receita_Liquida), 0) * 100, 2) AS Margem_Bruta_Pct,
+    ROUND(SUM(EBIT)          / NULLIF(SUM(Receita_Liquida), 0) * 100, 2) AS Margem_EBIT_Pct,
+    ROUND(SUM(Lucro_Liquido) / NULLIF(SUM(Receita_Liquida), 0) * 100, 2) AS Margem_Liquida_Pct,
+    -- Colunas antigas (média simples das margens mensais), mantidas por compatibilidade
     ROUND(AVG(Margem_Bruta_Pct),  2) AS Margem_Bruta_Media_Pct,
     ROUND(AVG(Margem_EBIT_Pct),   2) AS Margem_EBIT_Media_Pct,
     ROUND(AVG(Margem_Liquida_Pct),2) AS Margem_Liquida_Media_Pct
